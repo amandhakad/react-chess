@@ -28,6 +28,76 @@ class Board extends React.Component {
 					{this.renderSquare(0,"light")}
 					{this.renderSquare(0,"dark")}
 		  		</div>
+		  		<div className="chess-row"> 
+					{this.renderSquare(0,"dark")}	
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+		  		</div>
+		  		<div className="chess-row"> 
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}	
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+		  		</div>
+		  		<div className="chess-row"> 
+					{this.renderSquare(0,"dark")}	
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+		  		</div>
+		  		<div className="chess-row"> 
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}	
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+		  		</div>
+		  		<div className="chess-row"> 
+					{this.renderSquare(0,"dark")}	
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+		  		</div>
+		  		<div className="chess-row"> 
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}	
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+		  		</div>
+		  		<div className="chess-row"> 
+					{this.renderSquare(0,"dark")}	
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(0,"dark")}
+					{this.renderSquare(0,"light")}
+		  		</div>
 	  		</div>
 	  		);
   	}

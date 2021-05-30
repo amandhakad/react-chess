@@ -1,6 +1,7 @@
 .square {
 	width: 60px; height: 60px;
-	border: solid 0.3px grey;
+	border: none;
+	vertical-align: top;
 }
 .square.light {
 	background: #ececec;
