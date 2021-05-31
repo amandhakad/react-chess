@@ -24,7 +24,8 @@ class Square extends React.Component {
 		const focusClass = this.props.is_clicked ? "focus" : "not-focused";
 
   		return (
-  	    	<button className={`square ${this.props.color} ${pieceClass} ${focusClass}`} onClick={() => this.pieceClicked(this.props.id)}></button>
+  	    	<button className={`square ${this.props.color} ${pieceClass} ${focusClass}`}
+  	    	onClick={() => this.pieceClicked(this.props.id)}></button>
     	)
   	}
 }

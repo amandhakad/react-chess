@@ -2,7 +2,7 @@
 
 Building a chessboard from scratch in react
 
-Later to be used with python backend for complete game app
+Later to be used with backe
 
-So far (pieces not movable by click):  
+So far (pieces not movable by click):    
 ![screenshot](screenshot.png)
