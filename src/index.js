@@ -40,7 +40,7 @@ class Board extends React.Component {
 		//pieces contain the piece name array
 
 		//clicked contain the id of square that is currently clicked or not
-		this.state = {pieces: starting_position, clicked: 4};
+		this.state = {pieces: starting_position, clicked: null};
 	}
 
 	//updating state on clicking square component
