@@ -57,9 +57,9 @@ class Board extends React.Component {
 			//stop if square selected is empty
 			//**later this if to be handled by checkLegalMove**
 			if (this.state.pieces[from]==null) {
-				new_state.clicked = null;
+				new_state.clicked = to;
 				this.setState(new_state);
-				return;
+				return 0;
 			}
 
 			//first checking legal move or not
@@ -71,9 +71,10 @@ class Board extends React.Component {
 
 				//set state and return
 				this.setState(new_state);
-				//return new_state;
+				return 1;
 
 			}
+			return 0;
 	}
 
 	//updating state on clicking square component
@@ -83,11 +84,9 @@ class Board extends React.Component {
 
 		//if no square is clicked, simply focus
 		if (new_state.clicked==null) {
-
 			new_state.clicked = i;
 			this.setState(new_state);
 			return;
-
 		}
 
 		//unfocusing if clicked focused square else make a move:
@@ -99,24 +98,22 @@ class Board extends React.Component {
 
 		} else {
 			//move will be made here
-
 			//vars
 			let from = new_state.clicked;
 			let to = i;
 
 			//calling
-			this.makeMove(from, to);
+			let move_response;
+			move_response = this.makeMove(from, to);
 
-			//unfocusing
-			let new_state2 = {...this.state};
-			new_state2.clicked = null;
-			this.setState(new_state2);
-
+			//unfocusing if move success
+			if (move_response===1) {
+				let new_state2 = {...this.state};
+				new_state2.clicked = null;
+				this.setState(new_state2);
+			}
 			return;
-
 		}
-		
-		
 	}
 
 
@@ -126,11 +123,12 @@ class Board extends React.Component {
 		if (this.state.clicked===i) {
 			clicked=1;
 		}
+
 		return(<Square color={color} 
 			piece={this.state.pieces[i]} id={i} 
 			is_clicked={clicked} 
 			on_click={() => this.handleClick(i)} />);
-		
+
 	}
 	render() {
 		return(<div>
