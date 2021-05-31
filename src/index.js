@@ -9,7 +9,7 @@ class Board extends React.Component {
 
 	constructor(props) {
 		super(props);
-		let starting_position = Array(64);
+		let starting_position = Array(64).fill(null);
 		//starting position pieces here
 		for (var i = 0; i < starting_position.length; i++) {
 			if (i>7 && i<16) {
@@ -19,7 +19,7 @@ class Board extends React.Component {
 				starting_position[i] = "wP";
 			}
 			starting_position[0] = "bR";
-			starting_position[1] = "bK";
+			starting_position[1] = "bN";
 			starting_position[2] = "bB";
 			starting_position[3] = "bQ";
 			starting_position[4] = "bK";
@@ -28,7 +28,7 @@ class Board extends React.Component {
 			starting_position[7] = "bR";
 
 			starting_position[56] = "wR";
-			starting_position[57] = "wK";
+			starting_position[57] = "wN";
 			starting_position[58] = "wB";
 			starting_position[59] = "wQ";
 			starting_position[60] = "wK";
@@ -37,95 +37,112 @@ class Board extends React.Component {
 			starting_position[63] = "wR";
 		}
 		//updating
-		this.state = {pieces: starting_position};
+		//pieces contain the piece name array
+
+		//clicked contain the id of square that is currently clicked or not
+		this.state = {pieces: starting_position, clicked: 4};
 	}
 
-	renderSquare(i, color) {
+	//updating state on clicking square component
+	handleClick(i) {
+		let new_state = this.state;
+		new_state.clicked = i;
+		this.setState(new_state);
+	}
 
-		return(<Square color={color} piece={this.state.pieces[i-1]}/>);
+
+	renderSquare(i, color) {
+		let clicked = 0;
+		if (this.state.clicked===i) {
+			clicked=1;
+		}
+		return(<Square color={color} 
+			piece={this.state.pieces[i]} id={i} 
+			is_clicked={clicked} 
+			on_click={() => this.handleClick(i)} />);
 		
 	}
 	render() {
 		return(<div>
 				<div className="chess-row"> 
-					{this.renderSquare(1,"light")}
-					{this.renderSquare(2,"dark")}	
-					{this.renderSquare(3,"light")}
-					{this.renderSquare(4,"dark")}
-					{this.renderSquare(5,"light")}
-					{this.renderSquare(6,"dark")}
-					{this.renderSquare(7,"light")}
-					{this.renderSquare(8,"dark")}
+					{this.renderSquare(0,"light")}
+					{this.renderSquare(1,"dark")}	
+					{this.renderSquare(2,"light")}
+					{this.renderSquare(3,"dark")}
+					{this.renderSquare(4,"light")}
+					{this.renderSquare(5,"dark")}
+					{this.renderSquare(6,"light")}
+					{this.renderSquare(7,"dark")}
 		  		</div>
 		  		<div className="chess-row"> 
-					{this.renderSquare(9,"dark")}	
-					{this.renderSquare(10,"light")}
-					{this.renderSquare(11,"dark")}
-					{this.renderSquare(12,"light")}
-					{this.renderSquare(13,"dark")}
-					{this.renderSquare(14,"light")}
-					{this.renderSquare(15,"dark")}
+					{this.renderSquare(8,"dark")}	
+					{this.renderSquare(9,"light")}
+					{this.renderSquare(10,"dark")}
+					{this.renderSquare(11,"light")}
+					{this.renderSquare(12,"dark")}
+					{this.renderSquare(13,"light")}
+					{this.renderSquare(14,"dark")}
+					{this.renderSquare(15,"light")}
+		  		</div>
+		  		<div className="chess-row"> 
 					{this.renderSquare(16,"light")}
+					{this.renderSquare(17,"dark")}	
+					{this.renderSquare(18,"light")}
+					{this.renderSquare(19,"dark")}
+					{this.renderSquare(20,"light")}
+					{this.renderSquare(21,"dark")}
+					{this.renderSquare(22,"light")}
+					{this.renderSquare(23,"dark")}
 		  		</div>
 		  		<div className="chess-row"> 
-					{this.renderSquare(17,"light")}
-					{this.renderSquare(18,"dark")}	
-					{this.renderSquare(19,"light")}
-					{this.renderSquare(20,"dark")}
-					{this.renderSquare(21,"light")}
-					{this.renderSquare(22,"dark")}
-					{this.renderSquare(23,"light")}
-					{this.renderSquare(24,"dark")}
+					{this.renderSquare(24,"dark")}	
+					{this.renderSquare(25,"light")}
+					{this.renderSquare(26,"dark")}
+					{this.renderSquare(27,"light")}
+					{this.renderSquare(28,"dark")}
+					{this.renderSquare(29,"light")}
+					{this.renderSquare(30,"dark")}
+					{this.renderSquare(31,"light")}
 		  		</div>
 		  		<div className="chess-row"> 
-					{this.renderSquare(25,"dark")}	
-					{this.renderSquare(26,"light")}
-					{this.renderSquare(27,"dark")}
-					{this.renderSquare(28,"light")}
-					{this.renderSquare(29,"dark")}
-					{this.renderSquare(30,"light")}
-					{this.renderSquare(31,"dark")}
 					{this.renderSquare(32,"light")}
+					{this.renderSquare(33,"dark")}	
+					{this.renderSquare(34,"light")}
+					{this.renderSquare(35,"dark")}
+					{this.renderSquare(36,"light")}
+					{this.renderSquare(37,"dark")}
+					{this.renderSquare(38,"light")}
+					{this.renderSquare(39,"dark")}
 		  		</div>
 		  		<div className="chess-row"> 
-					{this.renderSquare(33,"light")}
-					{this.renderSquare(34,"dark")}	
-					{this.renderSquare(35,"light")}
-					{this.renderSquare(36,"dark")}
-					{this.renderSquare(37,"light")}
-					{this.renderSquare(38,"dark")}
-					{this.renderSquare(39,"light")}
-					{this.renderSquare(40,"dark")}
+					{this.renderSquare(40,"dark")}	
+					{this.renderSquare(41,"light")}
+					{this.renderSquare(42,"dark")}
+					{this.renderSquare(43,"light")}
+					{this.renderSquare(44,"dark")}
+					{this.renderSquare(45,"light")}
+					{this.renderSquare(46,"dark")}
+					{this.renderSquare(47,"light")}
 		  		</div>
 		  		<div className="chess-row"> 
-					{this.renderSquare(41,"dark")}	
-					{this.renderSquare(42,"light")}
-					{this.renderSquare(43,"dark")}
-					{this.renderSquare(44,"light")}
-					{this.renderSquare(45,"dark")}
-					{this.renderSquare(46,"light")}
-					{this.renderSquare(47,"dark")}
 					{this.renderSquare(48,"light")}
+					{this.renderSquare(49,"dark")}	
+					{this.renderSquare(50,"light")}
+					{this.renderSquare(51,"dark")}
+					{this.renderSquare(52,"light")}
+					{this.renderSquare(53,"dark")}
+					{this.renderSquare(54,"light")}
+					{this.renderSquare(55,"dark")}
 		  		</div>
 		  		<div className="chess-row"> 
-					{this.renderSquare(49,"light")}
-					{this.renderSquare(50,"dark")}	
-					{this.renderSquare(51,"light")}
-					{this.renderSquare(52,"dark")}
-					{this.renderSquare(53,"light")}
-					{this.renderSquare(54,"dark")}
-					{this.renderSquare(55,"light")}
-					{this.renderSquare(56,"dark")}
-		  		</div>
-		  		<div className="chess-row"> 
-					{this.renderSquare(57,"dark")}	
-					{this.renderSquare(58,"light")}
-					{this.renderSquare(59,"dark")}
-					{this.renderSquare(60,"light")}
-					{this.renderSquare(61,"dark")}
-					{this.renderSquare(62,"light")}
-					{this.renderSquare(63,"dark")}
-					{this.renderSquare(64,"light")}
+					{this.renderSquare(56,"dark")}	
+					{this.renderSquare(57,"light")}
+					{this.renderSquare(58,"dark")}
+					{this.renderSquare(59,"light")}
+					{this.renderSquare(60,"dark")}
+					{this.renderSquare(61,"light")}
+					{this.renderSquare(62,"dark")}
+					{this.renderSquare(63,"light")}
 		  		</div>
 	  		</div>
 	  		);

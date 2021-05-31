@@ -1,12 +1,7 @@
 import React from 'react';
 import './square.css';
-import blackP from './pieces/bP.png';
-class Square extends React.Component {
 
-	constructor(props) {
-		super(props);
-		this.state = null;
-	}
+class Square extends React.Component {
 
 	//get class name to be added by particular piece value for css purposes
 	getPieceClassName(value) {
@@ -18,10 +13,18 @@ class Square extends React.Component {
 		return x.replace("b", "black").replace("w", "white");
 	}
 
+	pieceClicked(id) {
+		return this.props.on_click();
+	}
+
 	render() {
+
 		const pieceClass = this.getPieceClassName(this.props.piece);
+		//add focus class if it is in clicked state
+		const focusClass = this.props.is_clicked ? "focus" : "not-focused";
+
   		return (
-  	    	<button className={`square ${this.props.color} ${pieceClass}`}></button>
+  	    	<button className={`square ${this.props.color} ${pieceClass} ${focusClass}`} onClick={() => this.pieceClicked(this.props.id)}></button>
     	)
   	}
 }

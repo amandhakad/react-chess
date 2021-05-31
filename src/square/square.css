@@ -3,6 +3,7 @@
 	border: none;
 	vertical-align: top;
 }
+
 .square.light {
 	background-color: #ececec;
 }
@@ -56,4 +57,9 @@
 .square.whiteK {
 	background-image: url("pieces/wK.png");
 	background-size: 60px;
+}
+/*focused square css*/
+.square.focus {
+	border: solid 3px #fff92c;
+    background-size: 54px;
 }
