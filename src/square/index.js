@@ -17,9 +17,9 @@ function Square(props) {
 		const pieceClass = getPieceClassName(props.piece);
 		//add focus class if it is in clicked state
 		const focusClass = props.is_clicked ? "focus" : "not-focused";
-
+		const available = props.available ? "available" : "";
   		return (
-  	    	<button className={`square ${props.color} ${pieceClass} ${focusClass}`}
+  	    	<button className={`square ${props.color} ${pieceClass} ${focusClass} ${available}`}
   	    	onClick={props.on_click}></button>
     	)
   	

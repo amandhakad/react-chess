@@ -1,9 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
 import Square from './square';
-
 import './index.css';
+
+//importing availableMoves
+import availableMoves from './availableMoves.js';
+
 
 class Board extends React.Component {
 
@@ -40,8 +42,7 @@ class Board extends React.Component {
 		//pieces contain the piece name array
 
 		//clicked contain the id of square that is currently clicked or not
-		this.state = {pieces: starting_position, clicked: null};
-
+		this.state = {pieces: starting_position, clicked: null, available_moves: []};
 	}
 
 	checkLegalMove(from, to) {
@@ -123,7 +124,6 @@ class Board extends React.Component {
 		if (this.state.clicked===i) {
 			clicked=1;
 		}
-
 		return(<Square color={color} 
 			piece={this.state.pieces[i]} id={i} 
 			is_clicked={clicked} 
