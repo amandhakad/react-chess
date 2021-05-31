@@ -41,17 +41,87 @@ class Board extends React.Component {
 
 		//clicked contain the id of square that is currently clicked or not
 		this.state = {pieces: starting_position, clicked: null};
+
+	}
+
+	checkLegalMove(from, to) {
+		//this function will check legality of move
+		//return true for now
+		return true;
+	}
+
+	makeMove(from, to) {
+			//check legal move
+			let new_state = {...this.state};
+
+			//stop if square selected is empty
+			//**later this if to be handled by checkLegalMove**
+			if (this.state.pieces[from]==null) {
+				new_state.clicked = null;
+				this.setState(new_state);
+				return;
+			}
+
+			//first checking legal move or not
+			if (this.checkLegalMove(from, to)) {
+
+				//moving the piece
+				new_state.pieces[to] = this.state.pieces[from];
+				new_state.pieces[from] = null;
+
+				//set state and return
+				this.setState(new_state);
+				//return new_state;
+
+			}
 	}
 
 	//updating state on clicking square component
 	handleClick(i) {
-		let new_state = this.state;
-		new_state.clicked = i;
-		this.setState(new_state);
+
+		let new_state = {...this.state};
+
+		//if no square is clicked, simply focus
+		if (new_state.clicked==null) {
+
+			new_state.clicked = i;
+			this.setState(new_state);
+			return;
+
+		}
+
+		//unfocusing if clicked focused square else make a move:
+		if (new_state.clicked===i) {
+
+			new_state.clicked = null;
+			this.setState(new_state);
+			return;
+
+		} else {
+			//move will be made here
+
+			//vars
+			let from = new_state.clicked;
+			let to = i;
+
+			//calling
+			this.makeMove(from, to);
+
+			//unfocusing
+			let new_state2 = {...this.state};
+			new_state2.clicked = null;
+			this.setState(new_state2);
+
+			return;
+
+		}
+		
+		
 	}
 
 
 	renderSquare(i, color) {
+
 		let clicked = 0;
 		if (this.state.clicked===i) {
 			clicked=1;
