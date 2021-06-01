@@ -1,26 +1,27 @@
-import React from 'react';
 import './square.css';
+import Piece from './../piece';
 
-
-//get class name to be added by particular piece value for css purposes
-function getPieceClassName(value) {
-	//ideally a dictionary like this will be created for mapping:
-	//let pieces = {bP: "blackP",bR: "blackR", wP: "whiteP"};
-
-	//but for now using short logical trick:
-	var x = String(value);
-	return x.replace("b", "black").replace("w", "white");
+//render piece component if not null
+function renderPiece(value) {
+  if (value == null) {
+    return;
+  } else {
+    return (
+     <Piece value={value} />
+    );
+  } 
 }
 
 function Square(props) {
-
-		const pieceClass = getPieceClassName(props.piece);
 		//add focus class if it is in clicked state
 		const focusClass = props.is_clicked ? "focus" : "not-focused";
 		const available = props.available ? "available" : "";
+
   		return (
-  	    	<button className={`square ${props.color} ${pieceClass} ${focusClass} ${available}`}
-  	    	onClick={props.on_click}></button>
+  	    	<button className={`square ${props.color} ${focusClass} ${available}`}
+  	    	onClick={props.on_click}>
+  	    		{renderPiece(props.piece)}
+  	    	</button>
     	)
   	
 }

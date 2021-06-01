@@ -3,6 +3,8 @@
 	width: 60px; height: 60px;
 	border: none;
 	vertical-align: top;
+
+	padding: 0;
 }
 
 .square.light {
@@ -11,58 +13,9 @@
 .square.dark {
 	background-color: #00b12e;
 }
-.square.blackP {
-	background-image: url("pieces/bP.png");
-	background-size: 60px;
-}
-.square.blackR {
-	background-image: url("pieces/bR.png");
-	background-size: 60px;
-}
-.square.blackN {
-	background-image: url("pieces/bN.png");
-	background-size: 60px;
-}
-.square.blackB {
-	background-image: url("pieces/bB.png");
-	background-size: 60px;
-}
-.square.blackQ {
-	background-image: url("pieces/bQ.png");
-	background-size: 60px;
-}
-.square.blackK {
-	background-image: url("pieces/bK.png");
-	background-size: 60px;
-}
-.square.whiteP {
-	background-image: url("pieces/wP.png");
-	background-size: 60px;
-}
-.square.whiteR {
-	background-image: url("pieces/wR.png");
-	background-size: 60px;
-}
-.square.whiteN {
-	background-image: url("pieces/wN.png");
-	background-size: 60px;
-}
-.square.whiteB {
-	background-image: url("pieces/wB.png");
-	background-size: 60px;
-}
-.square.whiteQ {
-	background-image: url("pieces/wQ.png");
-	background-size: 60px;
-}
-.square.whiteK {
-	background-image: url("pieces/wK.png");
-	background-size: 60px;
-}
 /*focused square css*/
 .square.focus {
 	border: solid 3px #fff92c;
-    background-size: 54px;
 }
 /*available square*/
 .square.available:after {
