@@ -42,7 +42,11 @@ class Board extends React.Component {
 		//pieces contain the piece name array
 
 		//clicked contain the id of square that is currently clicked or not
-		this.state = {pieces: starting_position, clicked: null, available_moves: []};
+		this.state = {pieces: starting_position, clicked: null, available_moves: [], isFlipped: false};
+	}
+
+	flipTheBoard() {
+		this.setState({isFlipped: !(this.state.isFlipped)});
 	}
 
 	checkLegalMove(from, to) {
@@ -119,7 +123,6 @@ class Board extends React.Component {
 
 
 	renderSquare(i, color) {
-
 		let clicked = 0;
 		if (this.state.clicked===i) {
 			clicked=1;
@@ -127,92 +130,44 @@ class Board extends React.Component {
 		return(<Square color={color} 
 			piece={this.state.pieces[i]} id={i} 
 			is_clicked={clicked} 
-			on_click={() => this.handleClick(i)} />);
-
+			on_click={() => this.handleClick(i)} key={`square_`+i} />);
 	}
+
+	renderRow(firstIndex) {
+		let boxes = [];
+		for(let i=firstIndex; i < 8+firstIndex; i++) {
+			let colors = (firstIndex%16===0) ? { first: "light", second: "dark" } : { first: "dark", second: "light" };
+			let color = (i%2===0 ) ? colors.first : colors.second;
+			boxes.push(this.renderSquare(i, color));
+		}
+
+		if(this.state.isFlipped) {
+			boxes.reverse();
+		}
+		
+		return (<div className="chess-row" key={`row`+firstIndex}>{boxes}</div>);
+	}
+
+	makeBoard() {
+		let rows = [];
+
+		for(let i = 0; i < 8; i++) {
+			rows.push(this.renderRow(i*8));
+		}
+
+		if(this.state.isFlipped) {
+			rows.reverse();
+		}
+		return (<div>{rows}</div>);
+	}
+
 	render() {
-		return(<div>
-				<div className="chess-row"> 
-					{this.renderSquare(0,"light")}
-					{this.renderSquare(1,"dark")}	
-					{this.renderSquare(2,"light")}
-					{this.renderSquare(3,"dark")}
-					{this.renderSquare(4,"light")}
-					{this.renderSquare(5,"dark")}
-					{this.renderSquare(6,"light")}
-					{this.renderSquare(7,"dark")}
-		  		</div>
-		  		<div className="chess-row"> 
-					{this.renderSquare(8,"dark")}	
-					{this.renderSquare(9,"light")}
-					{this.renderSquare(10,"dark")}
-					{this.renderSquare(11,"light")}
-					{this.renderSquare(12,"dark")}
-					{this.renderSquare(13,"light")}
-					{this.renderSquare(14,"dark")}
-					{this.renderSquare(15,"light")}
-		  		</div>
-		  		<div className="chess-row"> 
-					{this.renderSquare(16,"light")}
-					{this.renderSquare(17,"dark")}	
-					{this.renderSquare(18,"light")}
-					{this.renderSquare(19,"dark")}
-					{this.renderSquare(20,"light")}
-					{this.renderSquare(21,"dark")}
-					{this.renderSquare(22,"light")}
-					{this.renderSquare(23,"dark")}
-		  		</div>
-		  		<div className="chess-row"> 
-					{this.renderSquare(24,"dark")}	
-					{this.renderSquare(25,"light")}
-					{this.renderSquare(26,"dark")}
-					{this.renderSquare(27,"light")}
-					{this.renderSquare(28,"dark")}
-					{this.renderSquare(29,"light")}
-					{this.renderSquare(30,"dark")}
-					{this.renderSquare(31,"light")}
-		  		</div>
-		  		<div className="chess-row"> 
-					{this.renderSquare(32,"light")}
-					{this.renderSquare(33,"dark")}	
-					{this.renderSquare(34,"light")}
-					{this.renderSquare(35,"dark")}
-					{this.renderSquare(36,"light")}
-					{this.renderSquare(37,"dark")}
-					{this.renderSquare(38,"light")}
-					{this.renderSquare(39,"dark")}
-		  		</div>
-		  		<div className="chess-row"> 
-					{this.renderSquare(40,"dark")}	
-					{this.renderSquare(41,"light")}
-					{this.renderSquare(42,"dark")}
-					{this.renderSquare(43,"light")}
-					{this.renderSquare(44,"dark")}
-					{this.renderSquare(45,"light")}
-					{this.renderSquare(46,"dark")}
-					{this.renderSquare(47,"light")}
-		  		</div>
-		  		<div className="chess-row"> 
-					{this.renderSquare(48,"light")}
-					{this.renderSquare(49,"dark")}	
-					{this.renderSquare(50,"light")}
-					{this.renderSquare(51,"dark")}
-					{this.renderSquare(52,"light")}
-					{this.renderSquare(53,"dark")}
-					{this.renderSquare(54,"light")}
-					{this.renderSquare(55,"dark")}
-		  		</div>
-		  		<div className="chess-row"> 
-					{this.renderSquare(56,"dark")}	
-					{this.renderSquare(57,"light")}
-					{this.renderSquare(58,"dark")}
-					{this.renderSquare(59,"light")}
-					{this.renderSquare(60,"dark")}
-					{this.renderSquare(61,"light")}
-					{this.renderSquare(62,"dark")}
-					{this.renderSquare(63,"light")}
-		  		</div>
-	  		</div>
+		return(
+				<>
+					{this.makeBoard()}
+					<br />
+					<button onClick={() => this.flipTheBoard()}>Flip the board</button>
+				</>
 	  		);
   	}
 }
