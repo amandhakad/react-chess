@@ -52,4 +52,6 @@ npm start
 
 - [chess.js](https://github.com/jhlywa/chess.js) - The chess library used for validating moves and basically chess logics.
 
+---
+
 ![screenshot](screenshot.jpg)

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {} from 'react';
 import Square from './../square/square';
 
 import { Chess } from 'chess.js';
+import { squareIndexToNotation, squareNotationToIndex } from './../../helpers/common/common';
 
 class Board extends React.Component {
 
@@ -15,6 +16,23 @@ class Board extends React.Component {
 
 		let startingPieces = this.makePiecesArray(board);
 		this.state = {pieces: startingPieces, fen: fen, clicked: null, availableMoves: [], isFlipped: false};
+	}
+
+	componentDidUpdate() {
+		//code for available moves
+		const chess = new Chess();
+		chess.load(this.state.fen);
+		let clickedSquareNotation = squareIndexToNotation(this.state.clicked);
+		let available = chess.moves({square: clickedSquareNotation, verbose: true});
+		let availableMoves = [];
+		available.forEach(item => {
+			availableMoves.push(squareNotationToIndex(item.to));
+		});
+
+		//find a better way for the below comparison (toString will work here fine, but i dont like sort)
+		if(this.state.availableMoves.sort().toString()!==availableMoves.sort().toString()) {
+			this.setState({availableMoves: availableMoves});
+		}
 	}
 
 	makePiecesArray(board) {
@@ -35,25 +53,6 @@ class Board extends React.Component {
 		return pieces;
 	}
 
-	squareIndexToNotation(index) {
-		let row = Math.floor(index/8);
-		let column = index%8;
-
-		let letter = {0: "a", 1: "b", 2: "c", 3: "d", 4: "e", 5: "f", 6: "g", 7: "h"}
-
-		return (letter[column])+((8-row).toString());
-	}
-
-	squareNotationToIndex(notation) {
-		let columnLetter = notation.charAt(0);
-		let columnMap = {"a": 0, "b": 1, "c": 2, "d": 3, "e": 4, "f": 5,"g": 6, "h": 7};
-
-		let row = 8-parseInt(notation.charAt(1));
-		let column = columnMap[columnLetter];
-
-		return (8*row)+column;
-	}
-
 	flipTheBoard() {
 		this.setState({isFlipped: !(this.state.isFlipped)});
 	}
@@ -61,32 +60,24 @@ class Board extends React.Component {
 	makeMove(from, to) {
 			const chess = new Chess();
 			chess.load(this.state.fen);
-			chess.move({ from: this.squareIndexToNotation(from), to: this.squareIndexToNotation(to) });
-			const fen = chess.fen();
-			const board = chess.board();
-			let piecesArray = this.makePiecesArray(board);
-			this.setState({pieces: piecesArray, fen: fen, clicked: null, availableMoves: []});
-			return true;
+			let moveRes = chess.move({ from: squareIndexToNotation(from), to: squareIndexToNotation(to) });
+			if(moveRes) {
+				const fen = chess.fen();
+				const board = chess.board();
+				let piecesArray = this.makePiecesArray(board);
+				this.setState({pieces: piecesArray, fen: fen, clicked: null, availableMoves: []});
+				return true;
+			} else {
+				return false;
+			}
+			
 	}
 
 	//updating state on clicking square component
 	handleClick(i) {
-		const chess = new Chess();
-		chess.load(this.state.fen);
-
-		let clickedSquareNotation = this.squareIndexToNotation(i);
-
 		//if no square is already clicked, simply focus
 		if (this.state.clicked==null) {
-			//get available moves first from the clicked square
-			let available = chess.moves({square: clickedSquareNotation, verbose: true});
-
-			let availableMoves = [];
-			available.forEach(item => {
-				availableMoves.push(this.squareNotationToIndex(item.to));
-			});
-
-			this.setState({clicked: i, availableMoves: availableMoves});
+			this.setState({clicked: i});
 			return;
 		}
 
@@ -94,12 +85,17 @@ class Board extends React.Component {
 		if (this.state.clicked===i) {
 			this.setState({clicked: null, availableMoves: []});
 			return;
-		} else {
-			let from = this.state.clicked;
-			let to = i;
-			this.makeMove(from, to);
-			return;
 		}
+
+		let from = this.state.clicked;
+		let to = i;
+
+		let move = this.makeMove(from, to);
+		// !move means it was not valid move, so just focus the clicked square
+		if(!move) {
+			this.setState({clicked: i});
+		}
+		return;
 	}
 
 
@@ -140,7 +136,6 @@ class Board extends React.Component {
 		let flipped = this.state.isFlipped;
 
 		let rows = [];
-
 		let rowIndexes = [0,1,2,3,4,5,6,7];
 
 		if(flipped) {
