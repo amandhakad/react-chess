@@ -1,5 +1,3 @@
-import './piece.css';
-
 import bB from './pieceIcons/bB.png';
 import bK from './pieceIcons/bK.png';
 import bN from './pieceIcons/bN.png';
