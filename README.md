@@ -23,7 +23,7 @@ You will need to have Node.js and npm installed on your machine. You can follow 
 1. Clone the repository
 
 ```
-git clone https://github.com/username/chessboard-app.git
+git clone https://github.com/amandhakad/react-chessboard.git
 ```
 
 2. Install the dependencies

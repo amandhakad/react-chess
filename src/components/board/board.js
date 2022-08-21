@@ -15,24 +15,46 @@ class Board extends React.Component {
 		const board = chess.board();
 
 		let startingPieces = this.makePiecesArray(board);
-		this.state = {pieces: startingPieces, fen: fen, clicked: null, availableMoves: [], isFlipped: false};
+		this.state = {pieces: startingPieces, fen: fen, clicked: null, availableMoves: [], isFlipped: false, toMove: 'w'};
+	}
+
+	refreshAvailableMoves(chess) {
+		if((this.state.clicked === null) && (this.state.availableMoves.length > 0)) {
+			this.setState({availableMoves: []});
+		} else if(this.state.clicked!==null) {
+			let clickedSquareNotation = squareIndexToNotation(this.state.clicked);
+			let available = chess.moves({square: clickedSquareNotation, verbose: true});
+			let availableMoves = [];
+			available.forEach(item => {
+				availableMoves.push(squareNotationToIndex(item.to));
+			});
+
+			//find a better way for the below comparison (toString will work here fine, but i dont like sort)
+			if(this.state.availableMoves.sort().toString()!==availableMoves.sort().toString()) {
+				this.setState({availableMoves: availableMoves});
+			}
+		}
+	}
+
+	setNeededVariables(chess) {
+		let toMove = chess.turn();
+
+		let stateToUpdate = {};
+		if(toMove!==this.state.toMove) {
+			stateToUpdate.toMove = toMove;
+		}
+		if(Object.keys(stateToUpdate).length > 0) {
+			this.setState(stateToUpdate);
+		}
 	}
 
 	componentDidUpdate() {
-		//code for available moves
+
 		const chess = new Chess();
 		chess.load(this.state.fen);
-		let clickedSquareNotation = squareIndexToNotation(this.state.clicked);
-		let available = chess.moves({square: clickedSquareNotation, verbose: true});
-		let availableMoves = [];
-		available.forEach(item => {
-			availableMoves.push(squareNotationToIndex(item.to));
-		});
 
-		//find a better way for the below comparison (toString will work here fine, but i dont like sort)
-		if(this.state.availableMoves.sort().toString()!==availableMoves.sort().toString()) {
-			this.setState({availableMoves: availableMoves});
-		}
+		this.setNeededVariables(chess);
+		this.refreshAvailableMoves(chess);
 	}
 
 	makePiecesArray(board) {
@@ -155,6 +177,7 @@ class Board extends React.Component {
 					{this.makeBoard()}
 					<br />
 					<button onClick={() => this.flipTheBoard()}>Flip the board</button>
+					<p><b>Turn:</b> {this.state.toMove==='w' ? "White to move" : "Black to move"}</p>
 				</>
 	  		);
   	}
