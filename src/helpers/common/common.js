@@ -16,3 +16,21 @@ export const squareNotationToIndex = (notation) => {
 
 	return (8*row)+column;
 }
+
+export const makePiecesArray = (board) => {
+	let pieces = Array(64).fill(null);
+
+	//row loop
+	for(let i=0; i < board.length; i++) {
+		//square loop
+		for(let j=0; j<board[i].length; j++) {
+			let pieceValue = board[i][j] ? (board[i][j].color + board[i][j].type.toUpperCase()): null;
+
+			//superIndex is index of allpieces from 0 to 63
+			let superIndex = (i*8)+j;
+			pieces[superIndex] = pieceValue;
+		}
+	}
+
+	return pieces;
+}

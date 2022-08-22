@@ -2,7 +2,7 @@ import React, {} from 'react';
 import Square from './../square/square';
 
 import { Chess } from 'chess.js';
-import { squareIndexToNotation, squareNotationToIndex } from './../../helpers/common/common';
+import { squareIndexToNotation, squareNotationToIndex, makePiecesArray } from './../../helpers/common/common';
 
 class Board extends React.Component {
 
@@ -14,8 +14,18 @@ class Board extends React.Component {
 		const fen = chess.fen();
 		const board = chess.board();
 
-		let startingPieces = this.makePiecesArray(board);
-		this.state = {pieces: startingPieces, fen: fen, clicked: null, availableMoves: [], isFlipped: false, toMove: 'w'};
+		let startingPieces = makePiecesArray(board);
+
+		this.state = {
+			pieces: startingPieces,
+			fen: fen, clicked: null,
+			availableMoves: [],
+			isFlipped: false,
+			toMove: 'w',
+			gameStatus: "started",
+			moveHistory: [fen]
+		};
+
 	}
 
 	refreshAvailableMoves(chess) {
@@ -37,6 +47,10 @@ class Board extends React.Component {
 	}
 
 	setNeededVariables(chess) {
+		if(chess.game_over() && this.state.gameStatus !== "end") {
+			this.setState({gameStatus: "end"});
+			return;
+		}
 		let toMove = chess.turn();
 
 		let stateToUpdate = {};
@@ -57,26 +71,18 @@ class Board extends React.Component {
 		this.refreshAvailableMoves(chess);
 	}
 
-	makePiecesArray(board) {
-		let pieces = Array(64).fill(null);
-
-		//row loop
-		for(let i=0; i < board.length; i++) {
-			//square loop
-			for(let j=0; j<board[i].length; j++) {
-				let pieceValue = board[i][j] ? (board[i][j].color + board[i][j].type.toUpperCase()): null;
-
-				//superIndex is index of allpieces from 0 to 63
-				let superIndex = (i*8)+j;
-				pieces[superIndex] = pieceValue;
-			}
-		}
-
-		return pieces;
-	}
-
 	flipTheBoard() {
 		this.setState({isFlipped: !(this.state.isFlipped)});
+	}
+
+	undoMove() {
+		const chess = new Chess();
+		let moveHistory = this.state.moveHistory;
+		chess.load(moveHistory[moveHistory.length-2]);
+		const fen = chess.fen();
+		const pieces = makePiecesArray(chess.board());
+		moveHistory.pop();
+		this.setState({ pieces: pieces, fen: fen, moveHistory: moveHistory});
 	}
 
 	makeMove(from, to) {
@@ -86,8 +92,10 @@ class Board extends React.Component {
 			if(moveRes) {
 				const fen = chess.fen();
 				const board = chess.board();
-				let piecesArray = this.makePiecesArray(board);
-				this.setState({pieces: piecesArray, fen: fen, clicked: null, availableMoves: []});
+				let piecesArray = makePiecesArray(board);
+				let moveHistory = this.state.moveHistory;
+				moveHistory.push(fen);
+				this.setState({pieces: piecesArray, fen: fen, clicked: null, availableMoves: [], moveHistory: moveHistory});
 				return true;
 			} else {
 				return false;
@@ -176,8 +184,13 @@ class Board extends React.Component {
 				<>
 					{this.makeBoard()}
 					<br />
-					<button onClick={() => this.flipTheBoard()}>Flip the board</button>
-					<p><b>Turn:</b> {this.state.toMove==='w' ? "White to move" : "Black to move"}</p>
+					<button onClick={() => this.flipTheBoard()}>Flip the board</button> &nbsp;
+					<button onClick={() => this.undoMove()}>Undo</button>
+					<h2><b> {
+						this.state.gameStatus==='end' ? 
+						"Game Over: "+(this.state.toMove==='w' ? "Black wins" : "White wins") : 
+						(this.state.toMove==='w' ? "White to move" : "Black to move")
+					}</b></h2>
 				</>
 	  		);
   	}
