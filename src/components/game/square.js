@@ -1,4 +1,4 @@
-import Piece from './../piece/piece';
+import Piece from './piece';
 import { useState, useEffect } from 'react';
 
 //render piece component if not null

@@ -1,10 +1,10 @@
 import React, {} from 'react';
-import Square from './../square/square';
+import Board from './board';
 
 import { Chess } from 'chess.js';
 import { squareIndexToNotation, squareNotationToIndex, makePiecesArray } from './../../helpers/common/common';
 
-class Board extends React.Component {
+class Game extends React.Component {
 
 	constructor(props) {
 		super(props);
@@ -78,6 +78,11 @@ class Board extends React.Component {
 	undoMove() {
 		const chess = new Chess();
 		let moveHistory = this.state.moveHistory;
+
+		if(moveHistory.length < 2) {
+			return;
+		}
+
 		chess.load(moveHistory[moveHistory.length-2]);
 		const fen = chess.fen();
 		const pieces = makePiecesArray(chess.board());
@@ -128,61 +133,13 @@ class Board extends React.Component {
 		return;
 	}
 
-
-	renderSquare(i) {
-		let clicked = 0;
-		if (this.state.clicked===i) {
-			clicked=1;
-		}
-		let isAvailable = false;
-		let availableMoves = this.state.availableMoves;
-
-		if(availableMoves.includes(i)) {
-			isAvailable = true;
-		}
-
-		return(<Square 
-			index={i} 
-			piece={this.state.pieces[i]} id={i} 
-			available={isAvailable}
-			is_clicked={clicked} 
-			on_click={() => this.handleClick(i)} key={`square_`+i} />);
-	}
-
-	renderRow(firstIndex, flipped=false) {
-		let boxes = [];
-		for(let i=firstIndex; i < 8+firstIndex; i++) {
-			boxes.push(this.renderSquare(i));
-		}
-
-		if(flipped) {
-			boxes.reverse();
-		}
-
-		return (<div className="chess-row" key={`row`+firstIndex}>{boxes}</div>);
-	}
-
-	makeBoard() {
-		let flipped = this.state.isFlipped;
-
-		let rows = [];
-		let rowIndexes = [0,1,2,3,4,5,6,7];
-
-		if(flipped) {
-			rowIndexes.reverse();
-		}
-
-		rowIndexes.forEach((item) => {
-			rows.push(this.renderRow(item*8, flipped));
-		});
-
-		return (<div>{rows}</div>);
-	}
-
 	render() {
 		return(
 				<>
-					{this.makeBoard()}
+					<Board isFlipped={this.state.isFlipped} clickedSquare={this.state.clicked}
+					availableMoves={this.state.availableMoves} pieces={this.state.pieces}
+					on_click={(i) => this.handleClick(i)}
+					 />
 					<br />
 					<button onClick={() => this.flipTheBoard()}>Flip the board</button> &nbsp;
 					<button onClick={() => this.undoMove()}>Undo</button>
@@ -196,4 +153,4 @@ class Board extends React.Component {
   	}
 }
 
-export default Board;
+export default Game;
