@@ -97,30 +97,47 @@ class Game extends React.Component {
 		this.setState({ pieces: pieces, fen: fen, moveHistory: moveHistory});
 	}
 
-	makeMove(from, to) {
-			const chess = new Chess();
-			chess.load(this.state.fen);
+	makePlayerMove(from, to) {
+		const chess = new Chess();
+		chess.load(this.state.fen);
 
-			// checking proper player or not
-			if(this.state.gameData.type==="online") {
-				if(this.state.gameData.player !== chess.turn()) {
-					return { status: false, data: null };
-				}
-			}
-			console.log("chess bef", chess.turn());
-			let moveRes = chess.move({ from: squareIndexToNotation(from), to: squareIndexToNotation(to) });
-			if(moveRes) {
-				const fen = chess.fen();
-				const board = chess.board();
-				let piecesArray = makePiecesArray(board);
-				let moveHistory = this.state.moveHistory;
-				moveHistory.push(fen);
-				this.setState({pieces: piecesArray, fen: fen, clicked: null, availableMoves: [], moveHistory: moveHistory});
-				return { status: true, data: moveRes };
-			} else {
-				return { status: false, data: moveRes };
-			}
-			
+		// checking proper player or not
+		if(this.state.gameData.type==="online" && this.state.gameData.player !== chess.turn()) {
+			return { status: false, data: null };
+
+		}
+		let moveRes = chess.move({ from: squareIndexToNotation(from), to: squareIndexToNotation(to) });
+		if(moveRes) {
+			const fen = chess.fen();
+			const board = chess.board();
+			let piecesArray = makePiecesArray(board);
+			let moveHistory = this.state.moveHistory;
+			moveHistory.push(fen);
+			this.setState({pieces: piecesArray, fen: fen, clicked: null, availableMoves: [], moveHistory: moveHistory});
+			return { status: true, data: moveRes };
+		} else {
+			return { status: false, data: moveRes };
+		}	
+	}
+
+
+	handleOpponentMoveForOnlineGame(fromNotation, toNotation) {
+		console.log("received move", fromNotation, toNotation);
+		
+		const chess = new Chess();
+		chess.load(this.state.fen);
+		let moveRes = chess.move({ from: fromNotation, to: toNotation });
+		if(moveRes) {
+			const fen = chess.fen();
+			const board = chess.board();
+			let piecesArray = makePiecesArray(board);
+			let moveHistory = this.state.moveHistory;
+			moveHistory.push(fen);
+			this.setState({pieces: piecesArray, fen: fen, clicked: null, availableMoves: [], moveHistory: moveHistory});
+			return { status: true, data: moveRes };
+		} else {
+			return { status: false, data: moveRes };
+		}
 	}
 
 	//updating state on clicking square component
@@ -140,7 +157,7 @@ class Game extends React.Component {
 		let from = this.state.clicked;
 		let to = i;
 
-		let move = this.makeMove(from, to);
+		let move = this.makePlayerMove(from, to);
 		// !move.status means it was not valid move, so just focus the clicked square
 		if(!move.status) {
 			this.setState({clicked: i});

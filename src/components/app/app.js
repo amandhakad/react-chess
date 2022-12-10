@@ -1,28 +1,33 @@
-import { React, useState } from 'react';
+import { React, useState, useRef } from 'react';
 import Game from './../game/game';
 
 function App(props) {
+
+	const gameRef = useRef(null);
 
 	/* gameType = local or online */
 
 	const [gameData, setGameData] = useState({ type: "local" });
 	// const [gameData, setGameData] = useState({ type: "online", player: "w" });
 
-	/* no calls needed for local game, online game needs move calls */
-	// below functions will be used for move calls, only for gameType online games
-	const opponentMove = () => {
-		// to do
+	// use following functions to make and receive moves
+
+	const opponentMove = (from, to) => {
+		// Expects chess notation: Example: from = e2, to = e4
+		gameRef.current.handleOpponentMoveForOnlineGame(from, to);
 	}
 
 	const listenPlayerMove = (move) => {
 		console.log("playerMoved this", move);
 	}
 
-	return(<>
+	return(
+		<>
 			<h2>Game Type: {gameData.type}</h2>
 			<br />
-			<Game gameData={gameData} playerMoveCallback={listenPlayerMove} />
-		</>);
+			<Game gameData={gameData} playerMoveCallback={listenPlayerMove} ref={gameRef} />
+		</>
+		);
 }
 
 export default App;
