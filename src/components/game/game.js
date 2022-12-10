@@ -23,7 +23,8 @@ class Game extends React.Component {
 			isFlipped: false,
 			toMove: 'w',
 			gameStatus: "started",
-			moveHistory: [fen]
+			moveHistory: [fen],
+			gameData: props.gameData
 		};
 
 	}
@@ -68,7 +69,13 @@ class Game extends React.Component {
 		chess.load(this.state.fen);
 
 		this.setNeededVariables(chess);
-		this.refreshAvailableMoves(chess);
+
+		// handling online game, opponent square clicked
+		if(this.state.gameData.type==="online" && this.state.gameData.player !== chess.turn()) {
+			// do nothing
+		} else {
+			this.refreshAvailableMoves(chess);
+		}
 	}
 
 	flipTheBoard() {
@@ -93,6 +100,14 @@ class Game extends React.Component {
 	makeMove(from, to) {
 			const chess = new Chess();
 			chess.load(this.state.fen);
+
+			// checking proper player or not
+			if(this.state.gameData.type==="online") {
+				if(this.state.gameData.player !== chess.turn()) {
+					return { status: false, data: null };
+				}
+			}
+			console.log("chess bef", chess.turn());
 			let moveRes = chess.move({ from: squareIndexToNotation(from), to: squareIndexToNotation(to) });
 			if(moveRes) {
 				const fen = chess.fen();
@@ -101,16 +116,16 @@ class Game extends React.Component {
 				let moveHistory = this.state.moveHistory;
 				moveHistory.push(fen);
 				this.setState({pieces: piecesArray, fen: fen, clicked: null, availableMoves: [], moveHistory: moveHistory});
-				return true;
+				return { status: true, data: moveRes };
 			} else {
-				return false;
+				return { status: false, data: moveRes };
 			}
 			
 	}
 
 	//updating state on clicking square component
 	handleClick(i) {
-		//if no square is already clicked, simply focus
+		//if no square is already clicked
 		if (this.state.clicked==null) {
 			this.setState({clicked: i});
 			return;
@@ -126,9 +141,12 @@ class Game extends React.Component {
 		let to = i;
 
 		let move = this.makeMove(from, to);
-		// !move means it was not valid move, so just focus the clicked square
-		if(!move) {
+		// !move.status means it was not valid move, so just focus the clicked square
+		if(!move.status) {
 			this.setState({clicked: i});
+		} else {
+			// remind the app using callback
+			this.props.playerMoveCallback(move.data);
 		}
 		return;
 	}
@@ -142,7 +160,7 @@ class Game extends React.Component {
 					 />
 					<br />
 					<button onClick={() => this.flipTheBoard()}>Flip the board</button> &nbsp;
-					<button onClick={() => this.undoMove()}>Undo</button>
+					{this.state.gameData.type==="local" ? (<button onClick={() => this.undoMove()}>Undo</button>) : (<></>)}
 					<h2><b> {
 						this.state.gameStatus==='end' ? 
 						"Game Over: "+(this.state.toMove==='w' ? "Black wins" : "White wins") : 
