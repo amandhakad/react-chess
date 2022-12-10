@@ -2,7 +2,7 @@ import React, {} from 'react';
 import Board from './board';
 
 import { Chess } from 'chess.js';
-import { squareIndexToNotation, squareNotationToIndex, makePiecesArray } from './../../helpers/common/common';
+import { squareIndexToNotation, squareNotationToIndex, makePiecesArray } from './../helpers/common/common';
 
 class Game extends React.Component {
 

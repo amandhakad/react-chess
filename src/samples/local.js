@@ -1,16 +1,13 @@
 import { React, useState, useRef } from 'react';
-import Game from './../game/game';
+import Game from './../components/game';
 
-function App(props) {
+function Local(props) {
 
 	const gameRef = useRef(null);
 
 	/* gameType = local or online */
 
 	const [gameData, setGameData] = useState({ type: "local" });
-	// const [gameData, setGameData] = useState({ type: "online", player: "w" });
-
-	// use following functions to make and receive moves
 
 	const opponentMove = (from, to) => {
 		// Expects chess notation: Example: from = e2, to = e4
@@ -30,4 +27,4 @@ function App(props) {
 		);
 }
 
-export default App;
+export default Local;

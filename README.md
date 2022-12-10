@@ -6,9 +6,14 @@ Later to be made into complete game app, with node backend.
 
 ## So far done:
 
-- Pieces movable by click
+- Local two player game (src/samples/local)
+- Online multiplayer support (src/samples/online-boilerplate)
+
+## Basic Features
 - Highlighting available moves
 - Flip the board option
+- Undo option for local games only
+
 
 ## Getting Started
 
