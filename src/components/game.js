@@ -162,8 +162,11 @@ class Game extends React.Component {
 		if(!move.status) {
 			this.setState({clicked: i});
 		} else {
-			// remind the app using callback
-			this.props.playerMoveCallback(move.data);
+
+			if(this.state.gameData.type==="online") {
+				// remind the app using callback
+				this.props.playerMoveCallback(move.data);
+			}
 		}
 		return;
 	}
