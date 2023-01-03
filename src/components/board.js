@@ -51,7 +51,7 @@ function Board(props) {
             rows.push(renderRow(item*8, flipped));
         });
 
-        return (<div>{rows}</div>);
+        return (<div className="container-board">{rows}</div>);
     }
 
     return (makeBoard());

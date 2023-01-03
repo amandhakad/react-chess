@@ -24,7 +24,7 @@ function Square(props) {
 		
 		let colors = {main: "light", alt: "dark"};
 		if(row%2!==0) {
-			colors = {main: "dark", alt: "first"}
+			colors = {main: "dark", alt: "light"}
 		}
 
 		if(column%2===0) {

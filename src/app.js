@@ -6,7 +6,6 @@ function App(props) {
 
 	return (<>
 			<Local />
-			<OnlineBoilerplate />
 		</>);
 }
 

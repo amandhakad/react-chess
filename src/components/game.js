@@ -173,20 +173,20 @@ class Game extends React.Component {
 
 	render() {
 		return(
-				<>
+				<div className="container-game">
 					<Board isFlipped={this.state.isFlipped} clickedSquare={this.state.clicked}
 					availableMoves={this.state.availableMoves} pieces={this.state.pieces}
 					on_click={(i) => this.handleClick(i)}
 					 />
 					<br />
-					<button onClick={() => this.flipTheBoard()}>Flip the board</button> &nbsp;
-					{this.state.gameData.type==="local" ? (<button onClick={() => this.undoMove()}>Undo</button>) : (<></>)}
+					<button onClick={() => this.flipTheBoard()} className="action-btn">Flip the board</button> &nbsp;
+					{this.state.gameData.type==="local" ? (<button onClick={() => this.undoMove()} className="action-btn">Undo</button>) : (<></>)}
 					<h2><b> {
 						this.state.gameStatus==='end' ? 
 						"Game Over: "+(this.state.toMove==='w' ? "Black wins" : "White wins") : 
 						(this.state.toMove==='w' ? "White to move" : "Black to move")
 					}</b></h2>
-				</>
+				</div>
 	  		);
   	}
 }
