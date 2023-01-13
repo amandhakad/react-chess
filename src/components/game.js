@@ -17,21 +17,29 @@ class Game extends React.Component {
 		let startingPieces = makePiecesArray(board);
 
 		this.state = {
+			chess: chess,
 			pieces: startingPieces,
-			fen: fen, clicked: null,
+			clicked: null,
 			availableMoves: [],
 			isFlipped: false,
 			toMove: 'w',
 			gameStatus: "started",
+			// should we keep this local history or use chess instance?
 			moveHistory: [fen],
 			gameData: props.gameData
 		};
 
 	}
 
-	refreshAvailableMoves(chess) {
+	getAvailableMoves() {
+
+		const chess = this.state.chess;
+		if(this.state.gameData.type==="online" && this.state.gameData.player !== chess.turn()) {
+			return [];
+		};
+
 		if((this.state.clicked === null) && (this.state.availableMoves.length > 0)) {
-			this.setState({availableMoves: []});
+			return [];
 		} else if(this.state.clicked!==null) {
 			let clickedSquareNotation = squareIndexToNotation(this.state.clicked);
 			let available = chess.moves({square: clickedSquareNotation, verbose: true});
@@ -40,11 +48,9 @@ class Game extends React.Component {
 				availableMoves.push(squareNotationToIndex(item.to));
 			});
 
-			//find a better way for the below comparison (toString will work here fine, but i dont like sort)
-			if(this.state.availableMoves.sort().toString()!==availableMoves.sort().toString()) {
-				this.setState({availableMoves: availableMoves});
-			}
+			return availableMoves;
 		}
+		return [];
 	}
 
 	setNeededVariables(chess) {
@@ -53,7 +59,6 @@ class Game extends React.Component {
 			return;
 		}
 		let toMove = chess.turn();
-
 		let stateToUpdate = {};
 		if(toMove!==this.state.toMove) {
 			stateToUpdate.toMove = toMove;
@@ -64,18 +69,8 @@ class Game extends React.Component {
 	}
 
 	componentDidUpdate() {
-
-		const chess = new Chess();
-		chess.load(this.state.fen);
-
+		const chess = this.state.chess;
 		this.setNeededVariables(chess);
-
-		// handling online game, opponent square clicked
-		if(this.state.gameData.type==="online" && this.state.gameData.player !== chess.turn()) {
-			// do nothing
-		} else {
-			this.refreshAvailableMoves(chess);
-		}
 	}
 
 	flipTheBoard() {
@@ -83,28 +78,25 @@ class Game extends React.Component {
 	}
 
 	undoMove() {
-		const chess = new Chess();
 		let moveHistory = this.state.moveHistory;
-
 		if(moveHistory.length < 2) {
 			return;
 		}
-
+		// rebuilding chess
+		const chess = new Chess();
 		chess.load(moveHistory[moveHistory.length-2]);
 		const fen = chess.fen();
 		const pieces = makePiecesArray(chess.board());
 		moveHistory.pop();
-		this.setState({ pieces: pieces, fen: fen, moveHistory: moveHistory});
+		this.setState({ chess: chess, pieces: pieces, fen: fen, moveHistory: moveHistory});
 	}
 
 	makePlayerMove(from, to) {
-		const chess = new Chess();
-		chess.load(this.state.fen);
+		const chess = this.state.chess;
 
 		// checking proper player or not
 		if(this.state.gameData.type==="online" && this.state.gameData.player !== chess.turn()) {
 			return { status: false, data: null };
-
 		}
 		let moveRes = chess.move({ from: squareIndexToNotation(from), to: squareIndexToNotation(to) });
 		if(moveRes) {
@@ -124,8 +116,7 @@ class Game extends React.Component {
 	handleOpponentMoveForOnlineGame(fromNotation, toNotation) {
 		console.log("received move", fromNotation, toNotation);
 		
-		const chess = new Chess();
-		chess.load(this.state.fen);
+		const chess = this.state.chess;
 		let moveRes = chess.move({ from: fromNotation, to: toNotation });
 		if(moveRes) {
 			const fen = chess.fen();
@@ -172,10 +163,11 @@ class Game extends React.Component {
 	}
 
 	render() {
+		const calculatedAvailableMoves = this.getAvailableMoves();
 		return(
 				<div className="container-game">
 					<Board isFlipped={this.state.isFlipped} clickedSquare={this.state.clicked}
-					availableMoves={this.state.availableMoves} pieces={this.state.pieces}
+					availableMoves={calculatedAvailableMoves} pieces={this.state.pieces}
 					on_click={(i) => this.handleClick(i)}
 					 />
 					<br />
