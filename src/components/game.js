@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Board from './board';
 
 import { Chess } from 'chess.js';
@@ -6,13 +6,15 @@ import { squareIndexToNotation, squareNotationToIndex, makePiecesArray } from '.
 
 function Game(props) {
 
+	const initChess = new Chess();
+
 	const [state, setState] = useState({
-		chess: new Chess(),
+		chess: initChess,
 		clicked: null,
 		isFlipped: false,
 		toMove: 'w',
 		gameStatus: "started",
-		gameData: props.gameData
+		gameData: props.gameData,
 	});
 
 	useEffect(() => {
@@ -124,9 +126,9 @@ function Game(props) {
 		return;
 	}
 
-	const calculatedAvailableMoves = getAvailableMoves();
+	const calculatedAvailableMoves = useMemo(() => getAvailableMoves(), [state.clicked]);
 	const toMove = state.chess.turn();
-	const pieces = makePiecesArray(state.chess.board());
+	const pieces = useMemo(() => makePiecesArray(state.chess.board()), [state.chess.fen()]);
 
 	return (
 			<div className="container-game">
@@ -138,7 +140,7 @@ function Game(props) {
 				<br />
 				<button onClick={() => flipTheBoard()} className="action-btn">Flip the board</button> &nbsp;
 				{state.gameData.type==="local" ? (<button onClick={() => undoMove()} className="action-btn">Undo</button>) : (<></>)}
-				
+
 				<h2><b> {state.gameStatus==='end' ? "Game Over: "+(toMove==='w' ? "Black wins" : "White wins") : 
 					(toMove==='w' ? "White to move" : "Black to move")}</b></h2>
 			</div>
