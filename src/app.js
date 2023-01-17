@@ -7,7 +7,7 @@ import './assets/css/theme.css';
 function App(props) {
 
 	return (<>
-			<Local />
+			<OnlineBoilerplate />
 		</>);
 }
 

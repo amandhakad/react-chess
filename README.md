@@ -2,7 +2,7 @@
 
 Building a chessboard in reactJs
 
-Later to be made into complete game app, with node backend.
+Later to be made into complete p2p game app, with peerjs.
 
 ## So far done:
 

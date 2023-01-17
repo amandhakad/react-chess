@@ -19,9 +19,13 @@ function OnlineBoilerplate(props) {
 
 	return(
 		<>
-			<h2>Game Type: {gameData.type}</h2>
+			<h2 style={{textAlign: 'center'}}>Game Type: {gameData.type}</h2>
 			<br />
-			<Game gameData={gameData} playerMoveCallback={listenPlayerMove} ref={gameRef} />
+			<Game gameData={gameData} playerMoveCallback={listenPlayerMove} ref={gameRef} style={{margin: "auto"}}>
+				<Game.RenderBoard />
+				<Game.Status />
+				<Game.ActionBtns />
+			</Game>
 		</>
 		);
 }

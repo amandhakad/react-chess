@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useImperativeHandle } from 'react';
 import Board from './board';
 
 import { Chess } from 'chess.js';
@@ -96,18 +96,20 @@ function Game(props) {
 	}
 
 
-	const handleOpponentMoveForOnlineGame = (fromNotation, toNotation) => {
-		console.log("received move", fromNotation, toNotation);
-		
-		const chess = state.chess;
-		let moveRes = chess.move({ from: fromNotation, to: toNotation });
-		if(moveRes) {
-			updateState({chess: chess, clicked: null, availableMoves: []});
-			return { status: true, data: moveRes };
-		} else {
-			return { status: false, data: moveRes };
+	useImperativeHandle(props.forwardedRef, () => ({
+		handleOpponentMoveForOnlineGame: (fromNotation, toNotation) => {
+			console.log("received move", fromNotation, toNotation);
+			
+			const chess = state.chess;
+			let moveRes = chess.move({ from: fromNotation, to: toNotation });
+			if(moveRes) {
+				updateState({chess: chess, clicked: null, availableMoves: []});
+				return { status: true, data: moveRes };
+			} else {
+				return { status: false, data: moveRes };
+			}
 		}
-	}
+	}));
 
 	//updating state on clicking square component
 	const handleClick = (i) => {
@@ -147,14 +149,16 @@ function Game(props) {
 	const pieces = useMemo(() => makePiecesArray(state.chess.board()), [state.chess.fen()]);
 
 	return (
-			<div className="container-game">
+			<div className="container-game" style={{...props.style}}>
 				{React.Children.map(props.children, child => React.cloneElement(child, { state: state, toMove: toMove, flipTheBoard: flipTheBoard, undoMove: undoMove, calculatedAvailableMoves: calculatedAvailableMoves, pieces: pieces, handleClick: handleClick }) )}
 			</div>
   		);
 
 }
 
-Game.Status = GameStatus;
-Game.ActionBtns = GameActionButtons;
-Game.RenderBoard = GameRenderBoard;
-export default Game;
+
+const ForwardedGame = React.forwardRef((props, ref) => <Game {...props} forwardedRef={ref} />);
+ForwardedGame.Status = GameStatus;
+ForwardedGame.ActionBtns = GameActionButtons;
+ForwardedGame.RenderBoard = GameRenderBoard;
+export default ForwardedGame;

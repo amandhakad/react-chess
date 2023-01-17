@@ -9,7 +9,7 @@ function Local(props) {
 		<>
 			<h2 style={{textAlign: 'center'}}>Game Type: {gameData.type}</h2>
 			<br />
-			<Game gameData={gameData}>
+			<Game gameData={gameData} style={{margin: "auto"}}>
 				<Game.RenderBoard />
 				<Game.Status />
 				<Game.ActionBtns />

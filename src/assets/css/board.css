@@ -38,6 +38,7 @@ body {
 }
 
 .container-game {
+	width: fit-content;
 	text-align: center;
 }
 
