@@ -1,4 +1,5 @@
 import Square from './square';
+import './../assets/css/board.css';
 
 function Board(props) {
 

@@ -1,85 +1,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap');
-body {
-	font-family: 'Roboto', sans-serif;
-}
-.square {
-	cursor: pointer;
-}
-.square.light {
-	background-color: #ececec;
-}
-.square.dark {
-	background-color: #00b12e;
-}
-/*focused square css*/
-.square.focus {
-	border: solid 3px #fff92c;
-}
-/*available square*/
-.square.available {
-	background: radial-gradient(rgb(20 85 30) 19%, #ececec 0%);
-}
-.square.dark.available {
-	background: radial-gradient(rgb(20 85 30) 19%, #00b12e 0%);
-}
 
-.container-game {
-	text-align: center;
-}
 
-.container-board {
-	width: calc(80px * 8);
-	margin: auto;
-}
-.square {
-	position: relative;
-	width: 80px; height: 80px;
-	border: none;
-	vertical-align: top;
-	padding: 0;
-}
+/* overriding variables */
+/*:root {
+	--light-square: #ebfffe;
+	--dark-square: #5cd0c9;
+	--focus-border: #fff92c;
+	--body-bg: #002522;
+	--text-color: #fff;
+	--action-btn-bg: #d9d9d9;
+	--action-btn-color: #000000;
+}*/
 
-.square img {
-	width: 70px;
-}
-.square.focus img {
-	width: 70px;
-}
-
-@media (max-width:  992px) {
-	.container-board {
-		width: calc(60px * 8);
-	}
-	.square {
-		width: 60px;height: 60px;
-	}
-	.square img {
-		width: 56px;
-	}
-	.square.focus img {
-		width: 54px;
-	}
-}
-
-@media (max-width: 520px) {
-	.container-board {
-		width: calc(50px * 8);
-	}
-	.square {
-		width: 50px;height: 50px;
-	}
-	.square img {
-		width: 44px;
-	}
-	.square.focus img {
-		width: 42px;
-	}
-}
-
-button.action-btn {
-	cursor: pointer;
-	background: #d9d9d9;
-	padding: 8px 22px;
-	border: none;
-	border-radius: 2px;
+:root {
+	--light-square: #f0f2fb;
+	--dark-square: #96a2eb;
+	--focus-border: #fff92c;
+	--body-bg: #000730;
+	--text-color: #fff;
+	--action-btn-bg: #f0f2fb;
+	--action-btn-color: #000000;
+	--dark-highlighter: #525faf;
 }

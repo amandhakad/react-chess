@@ -1,8 +1,24 @@
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Board from './board';
 
 import { Chess } from 'chess.js';
 import { squareIndexToNotation, squareNotationToIndex, makePiecesArray } from './../helpers/common/common';
+
+const GameStatus = (props) => { return (<><h2><b> {props.state.gameStatus==='end' ? "Game Over: "+(props.toMove==='w' ? "Black wins" : "White wins") : 
+					(props.toMove==='w' ? "White to move" : "Black to move")}</b></h2></>);};
+
+const GameActionButtons = (props) => (
+	<>
+		<button onClick={() => props.flipTheBoard()} className="action-btn">Flip the board</button>
+		&nbsp;
+		{props.state.gameData.type==="local" ? (<button onClick={() => props.undoMove()} className="action-btn">Undo</button>) : (<></>)}
+	</>);
+
+const GameRenderBoard = (props) => (
+			<Board isFlipped={props.state.isFlipped} clickedSquare={props.state.clicked}
+				availableMoves={props.calculatedAvailableMoves} pieces={props.pieces}
+				on_click={(i) => props.handleClick(i)}
+				 />);
 
 function Game(props) {
 
@@ -132,20 +148,13 @@ function Game(props) {
 
 	return (
 			<div className="container-game">
-				<Board isFlipped={state.isFlipped} clickedSquare={state.clicked}
-				availableMoves={calculatedAvailableMoves} pieces={pieces}
-				on_click={(i) => handleClick(i)}
-				 />
-
-				<br />
-				<button onClick={() => flipTheBoard()} className="action-btn">Flip the board</button> &nbsp;
-				{state.gameData.type==="local" ? (<button onClick={() => undoMove()} className="action-btn">Undo</button>) : (<></>)}
-
-				<h2><b> {state.gameStatus==='end' ? "Game Over: "+(toMove==='w' ? "Black wins" : "White wins") : 
-					(toMove==='w' ? "White to move" : "Black to move")}</b></h2>
+				{React.Children.map(props.children, child => React.cloneElement(child, { state: state, toMove: toMove, flipTheBoard: flipTheBoard, undoMove: undoMove, calculatedAvailableMoves: calculatedAvailableMoves, pieces: pieces, handleClick: handleClick }) )}
 			</div>
   		);
 
 }
 
+Game.Status = GameStatus;
+Game.ActionBtns = GameActionButtons;
+Game.RenderBoard = GameRenderBoard;
 export default Game;

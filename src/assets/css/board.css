@@ -1,0 +1,100 @@
+/* variables */
+:root {
+	--light-square: #ececec;
+	--dark-square: #00b12e;
+	--focus-border: #fff92c;
+	--body-bg: #ffffff;
+	--text-color: #000000;
+	--action-btn-bg: #d9d9d9;
+	--action-btn-color: #000000;
+	--dark-highlighter: #14551e;
+}
+
+body {
+	font-family: 'Roboto', sans-serif;
+	background-color: var(--body-bg);
+	color: var(--text-color);
+}
+
+.square {
+	cursor: pointer;
+}
+.square.light {
+	background-color: var(--light-square);
+}
+.square.dark {
+	background-color: var(--dark-square);
+}
+/*focused square css*/
+.square.focus {
+	border: solid 3px var(--focus-border);
+}
+/*available square*/
+.square.available {
+	background: radial-gradient(var(--dark-highlighter) 19%, var(--light-square) 0%);
+}
+.square.dark.available {
+	background: radial-gradient(var(--dark-highlighter) 19%, var(--dark-square) 0%);
+}
+
+.container-game {
+	text-align: center;
+}
+
+.container-board {
+	width: calc(80px * 8);
+	margin: auto;
+}
+.square {
+	position: relative;
+	width: 80px; height: 80px;
+	border: none;
+	vertical-align: top;
+	padding: 0;
+}
+
+.square img {
+	width: 70px;
+}
+.square.focus img {
+	width: 70px;
+}
+
+@media (max-width:  992px) {
+	.container-board {
+		width: calc(60px * 8);
+	}
+	.square {
+		width: 60px;height: 60px;
+	}
+	.square img {
+		width: 56px;
+	}
+	.square.focus img {
+		width: 54px;
+	}
+}
+
+@media (max-width: 520px) {
+	.container-board {
+		width: calc(50px * 8);
+	}
+	.square {
+		width: 50px;height: 50px;
+	}
+	.square img {
+		width: 44px;
+	}
+	.square.focus img {
+		width: 42px;
+	}
+}
+
+button.action-btn {
+	cursor: pointer;
+	background: var(--action-btn-bg);
+	padding: 8px 22px;
+	border: none;
+	border-radius: 2px;
+	color: var(--action-btn-color);
+}
