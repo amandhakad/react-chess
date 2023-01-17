@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useImperativeHandle } from 'react';
+import React, { useState, useEffect, useMemo, useImperativeHandle, useCallback } from 'react';
 import Board from './board';
 
 import { Chess } from 'chess.js';
@@ -42,8 +42,8 @@ function Game(props) {
 		setState({...state, ...update});
 	}
 
-	const getAvailableMoves = () => {
-
+	const getAvailableMoves = useCallback(() => {
+		console.log("av checked");
 		const chess = state.chess;
 		if(state.gameData.type==="online" && state.gameData.player !== chess.turn()) {
 			return [];
@@ -59,7 +59,7 @@ function Game(props) {
 			return squareNotationToIndex(item.to);
 		});
 		return availableMoves;
-	}
+	}, [state.chess, state.gameData, state.clicked]);
 
 	const setNeededVariables = (chess) => {
 		if(chess.game_over() && state.gameStatus !== "end") {
@@ -144,9 +144,10 @@ function Game(props) {
 		return;
 	}
 
-	const calculatedAvailableMoves = useMemo(() => getAvailableMoves(), [state.clicked]);
+	const calculatedAvailableMoves = useMemo(() => getAvailableMoves(), [getAvailableMoves]);
 	const toMove = state.chess.turn();
-	const pieces = useMemo(() => makePiecesArray(state.chess.board()), [state.chess.fen()]);
+	const boardData = state.chess.board();
+	const pieces = useMemo(() => makePiecesArray(boardData), [boardData]);
 
 	return (
 			<div className="container-game" style={{...props.style}}>
