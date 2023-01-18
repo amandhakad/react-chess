@@ -1,11 +1,10 @@
-# React Chessboard (react-chessboard)
+# React Chess (react-chess)
 
-Building a chessboard in reactJs
+Building a chess game app using reactJS. Supports P2P online game, local game & provides boilerplate code for other online support.
 
-Later to be made into complete p2p game app, with peerjs.
 
 ## So far done:
-
+- Online Random P2P - v1 (src/samples/p2p)
 - Local two player game (src/samples/local)
 - Online multiplayer support (src/samples/online-boilerplate)
 

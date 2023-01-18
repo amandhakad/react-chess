@@ -84,7 +84,6 @@ function Game(props) {
 	}
 
 	const getAvailableMoves = useCallback(() => {
-		console.log("av checked");
 		const chess = state.chess;
 		if(state.gameData.type==="online" && state.gameData.player !== chess.turn()) {
 			return [];
@@ -149,6 +148,10 @@ function Game(props) {
 			} else {
 				return { status: false, data: moveRes };
 			}
+		},
+		// for one time board flip on online games connection
+		outsideBoardFlipper: () => {
+			flipTheBoard()
 		}
 	}));
 

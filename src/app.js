@@ -1,14 +1,31 @@
-import { React } from 'react';
+import React from 'react';
+import P2P from './samples/p2p';
 import Local from './samples/local';
-import OnlineBoilerplate from './samples/online-boilerplate';
+// import OnlineBoilerplate from './samples/online-boilerplate';
 
 import './assets/css/theme.css';
 
-function App(props) {
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
-	return (<>
-			<Local />
-		</>);
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <P2P />,
+  },
+  {
+    path: "local",
+    element: <Local />,
+  }
+]);
+
+function App() {
+	return (
+		<React.StrictMode>
+	    	<RouterProvider router={router} />
+		</React.StrictMode>);
 }
 
 export default App;
