@@ -1,6 +1,6 @@
 import { React } from 'react';
 import Local from './samples/local';
-// import OnlineBoilerplate from './samples/online-boilerplate';
+import OnlineBoilerplate from './samples/online-boilerplate';
 
 import './assets/css/theme.css';
 

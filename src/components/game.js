@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useImperativeHandle, useCallback } from 'react';
 import Board from './board';
+import Piece from './piece';
 
 import { Chess } from 'chess.js';
 import { squareIndexToNotation, squareNotationToIndex, makePiecesArray } from './../helpers/common/common';
@@ -14,11 +15,51 @@ const GameActionButtons = (props) => (
 		{props.state.gameData.type==="local" ? (<button onClick={() => props.undoMove()} className="action-btn">Undo</button>) : (<></>)}
 	</>);
 
-const GameRenderBoard = (props) => (
+const PlayerInfo = ({player, position, chess, index}) => { 
+
+	const getCapturedPieces = (game, color) => {
+	    const captured = {'p': 0, 'n': 0, 'b': 0, 'r': 0, 'q': 0}
+
+	    for (const move of game.history({ verbose: true })) {
+	        if (move.hasOwnProperty("captured") && move.color !== color[0]) {
+	            captured[move.captured]++
+	        }
+	    }
+
+	    const output = [];
+	    for (const i in captured) {
+	    	if(captured[i] > 0) {
+	    		output.push({key: i, value: captured[i]});
+	    	}
+	    }
+
+	    return output;
+	}
+
+	const color = index===1 ? "w" : "b";
+
+	const capturedPieces = getCapturedPieces(chess, color==="w" ? "white" : "black");
+
+	return (<div className={`playerInfo playerInfo_${position}`} style={{alignSelf: position==="bottom" ? "end":"start"}}>
+				<span>{player["name"]}</span> 
+				<br/> 
+				{capturedPieces.map((piece, index) => { return Array(piece.value).fill(null).map((i) => <Piece value={`${color}${piece.key.toUpperCase()}`} style={{backgroundColor: '#fff', marginTop: '10px'}} className="piece_captured" />) }) }
+				
+			</div>)
+};
+
+const GameRenderBoard = (props) => {
+	const playerInfoData = props.state.gameData.playerInfo;
+	return (
+		<div className="game-grid" style={{display: "flex"}}>
+			<PlayerInfo position="top" index={props.state.isFlipped ? 0 : 1} chess={props.state.chess} player={playerInfoData[props.state.isFlipped ? 0 : 1]} />
 			<Board isFlipped={props.state.isFlipped} clickedSquare={props.state.clicked}
 				availableMoves={props.calculatedAvailableMoves} pieces={props.pieces}
 				on_click={(i) => props.handleClick(i)}
-				 />);
+				 />
+			<PlayerInfo position="bottom" index={props.state.isFlipped ? 1 : 0} chess={props.state.chess} player={playerInfoData[props.state.isFlipped ? 1 : 0]} />
+		</div>);
+};
 
 function Game(props) {
 

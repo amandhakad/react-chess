@@ -3,11 +3,10 @@ import Game from './../components/game';
 
 function Local(props) {
 
-	const [gameData, setGameData] = useState({ type: "local" });
+	const [gameData, setGameData] = useState({ type: "local", playerInfo:[{name: "Player 1"}, {name: "Player 2"}] });
 
 	return(
 		<>
-			<h2 style={{textAlign: 'center'}}>Game Type: {gameData.type}</h2>
 			<br />
 			<Game gameData={gameData} style={{margin: "auto"}}>
 				<Game.RenderBoard />

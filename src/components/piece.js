@@ -20,9 +20,11 @@ function getPieceImage(value) {
 }
 
 function Piece(props) {
+    const style = props.style ?? {};
+    const className = props.className ?? "";
 		const pieceImage = getPieceImage(props.value);
   		return (
-  	    		 <img src={pieceImage} alt="piece" />
+  	    		 <img className={`${className}`} src={pieceImage} style={{...style}} alt="piece" />
     	)
 }
 

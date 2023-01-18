@@ -99,3 +99,30 @@ button.action-btn {
 	border-radius: 2px;
 	color: var(--action-btn-color);
 }
+.playerInfo {
+	font-weight: 600;
+	padding: 15px 30px;
+	width: 200px;
+}
+.playerInfo_top {
+	text-align: right;
+}
+.playerInfo_bottom {
+	text-align: left;
+}
+
+@media (max-width:  992px) {
+	.game-grid {
+		flex-direction: column;
+	}
+	.playerInfo_top {
+		text-align: left;
+	}
+	.playerInfo_bottom {
+		text-align: right;
+	}
+}
+
+.piece_captured {
+	width: 30px;
+}

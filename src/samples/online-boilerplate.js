@@ -5,7 +5,7 @@ function OnlineBoilerplate(props) {
 
 	const gameRef = useRef(null);
 
-	const [gameData, setGameData] = useState({ type: "online", player: "w" });
+	const [gameData, setGameData] = useState({ type: "online", player: "w", playerInfo: [{name: "You"}, {name: "Stranger"}] });
 
 	// use following functions to make and receive moves
 	const opponentMove = (from, to) => {
@@ -19,7 +19,6 @@ function OnlineBoilerplate(props) {
 
 	return(
 		<>
-			<h2 style={{textAlign: 'center'}}>Game Type: {gameData.type}</h2>
 			<br />
 			<Game gameData={gameData} playerMoveCallback={listenPlayerMove} ref={gameRef} style={{margin: "auto"}}>
 				<Game.RenderBoard />
