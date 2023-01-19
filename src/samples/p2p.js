@@ -1,6 +1,8 @@
 import { React, useState, useRef, useEffect } from 'react';
 import Game from './../components/game';
 
+import Loader from './../assets/ui/loader';
+
 import Peer from 'peerjs';
 const LOBBY_NAME = "RC_lobby123";
 
@@ -41,7 +43,8 @@ function P2P(props) {
 	      if (currentConn == null) {
 	     	setGameData({type: "online", player: "b", playerInfo: gameData.playerInfo.reverse()});
 	        setCurrentConn(conn);
-	        outsideBoardFlipper()
+	        restartGame();
+	        outsideBoardFlipper();
 	        conn.on('data', (data) => {
 	          console.log('Received', data);
 	          // making the move here
@@ -124,6 +127,11 @@ function P2P(props) {
 		gameRef.current.outsideBoardFlipper();
 	}
 
+	const restartGame = () => {
+		console.log("restarting game");
+		gameRef.current.restartGame();
+	}
+
 	// use following functions to make and receive moves
 	const opponentMove = (from, to) => {
 		// Expects chess notation: Example: from = e2, to = e4
@@ -141,7 +149,7 @@ function P2P(props) {
 		<>
 			{/*<input type="text" id="remotepeer" />
 			<button onClick={() => tryConnect()}>connect</button>*/}
-			{!currentConn ? "Connecting..." :
+			{!currentConn ? <Loader>Finding a player...<br/><br/><a href="local" style={{color: "#fff"}}>Play Offline</a></Loader> :
 			(<Game gameData={gameData} playerMoveCallback={listenPlayerMove} ref={gameRef} style={{margin: "auto"}}>
 				<Game.RenderBoard />
 				<Game.Status />

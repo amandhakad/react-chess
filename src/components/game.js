@@ -152,6 +152,16 @@ function Game(props) {
 		// for one time board flip on online games connection
 		outsideBoardFlipper: () => {
 			flipTheBoard()
+		},
+		restartGame: () => {
+			setState({
+				chess: new Chess(),
+				clicked: null,
+				isFlipped: false,
+				toMove: 'w',
+				gameStatus: "started",
+				gameData: props.gameData
+			});
 		}
 	}));
 
